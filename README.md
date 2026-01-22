@@ -91,7 +91,10 @@ docker exec -it 0000-nexuscommerce-localstack-1 awslocal s3 mb s3://nexus-images
 docker exec -it 0000-nexuscommerce-localstack-1 awslocal sqs create-queue --queue-name nexus-orders
 ```
 
-### Passo 3: Inicializar os MicrosserviçosExecute as aplicações na seguinte ordem (via IDE ou Maven):NexusGatewayApplication (Porta 8080)NexusCatalogApplication (Porta 8081)NexusOrderApplication (Porta 8082)
+### Passo 3: Inicializar os MicrosserviçosExecute as aplicações na seguinte ordem (via IDE ou Maven):
+* NexusGatewayApplication (Porta 8080)
+* NexusCatalogApplication (Porta 8081)
+* NexusOrderApplication (Porta 8082)
 
 ## 🧪 Testando a API (Endpoints)Todas as requisições devem ser feitas através do API Gateway (Porta 8080).
 
