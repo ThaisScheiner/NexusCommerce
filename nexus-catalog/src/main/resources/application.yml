@@ -1,0 +1,48 @@
+server:
+  port: 8081 # Porta deste microserviço
+
+spring:
+  application:
+    name: nexus-catalog
+
+  # --- Configuração do Banco de Dados (PostgreSQL) ---
+  datasource:
+    # MUDANÇA CRÍTICA: Porta 5434 para evitar conflito com seu Postgres local
+    url: jdbc:postgresql://localhost:5434/catalog_db
+    username: nexus_dev
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  # --- Configuração do JPA / Hibernate ---
+  jpa:
+    hibernate:
+      ddl-auto: update # Cria as tabelas automaticamente na inicialização
+    show-sql: true     # Mostra o SQL no terminal (bom para debug)
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # --- Configuração do Cache (Redis) ---
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+# --- Configuração Customizada da AWS (LocalStack) ---
+# Essas variáveis são lidas pela classe AwsConfig.java
+aws:
+  endpoint: http://localhost:4566
+  region: us-east-1
+  bucket: nexus-images
+  access-key: test
+  secret-key: test
+
+# --- Observabilidade (Zipkin / Distributed Tracing) ---
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # 1.0 = Envia 100% das requisições para o Zipkin
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
