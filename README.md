@@ -99,21 +99,27 @@ docker exec -it 0000-nexuscommerce-localstack-1 awslocal sqs create-queue --queu
 ## 🧪 Testando a API (Endpoints)Todas as requisições devem ser feitas através do API Gateway (Porta 8080).
 
 1. Criar Produto (Com Upload de Imagem)
-URL: POST http://localhost:8080/api/products
-Tipo: multipart/form-data
+* URL: POST http://localhost:8080/api/products
+* Tipo: multipart/form-data
+  
+<br>
 
-Chave,Tipo,Valor
-name,Text,Notebook Gamer Ultra
-price,Text,15000.00
-image,File,(Selecione um arquivo .jpg/.png)
+* Chave,Tipo,Valor
+* name,Text,Notebook Gamer Ultra
+* price,Text,15000.00
+* image,File,(Selecione um arquivo .jpg/.png)
+  
+<br>
 
 2. Buscar Produto (Teste de Cache)
-URL: GET http://localhost:8080/api/products/{id}
+* URL: GET http://localhost:8080/api/products/{id}
 
 Obs: A primeira chamada consulta o PostgreSQL (lenta). A segunda chamada vem do Redis (instantânea - verifique os logs).
 
+<br>
+
 3. Realizar Pedido (Fluxo Assíncrono)
-URL: POST http://localhost:8080/api/orders
+* URL: POST http://localhost:8080/api/orders
 
 Body (JSON):
 
@@ -133,7 +139,7 @@ Resultado Esperado: A API retornará 202 Accepted imediatamente. No console do n
 
 Acesse o Zipkin para visualizar o rastro distribuído das requisições entre os microsserviços:
 
-URL: http://localhost:9411
+* URL: http://localhost:9411
 
 ## 📝 Decisões de Arquitetura
 
