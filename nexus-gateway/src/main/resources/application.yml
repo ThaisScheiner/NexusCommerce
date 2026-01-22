@@ -1,0 +1,42 @@
+server:
+  port: 8080 # O Gateway é a única porta que o Front-end/Postman deve chamar
+
+spring:
+  application:
+    name: nexus-gateway
+  cloud:
+    gateway:
+      # Configuração Global de CORS (Para o Front-end não ser bloqueado)
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*" # Em produção, troque pelo domínio do front (ex: http://localhost:4200)
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders: "*"
+
+      # As Rotas de Redirecionamento
+      routes:
+        # Rota 1: Tudo que for /api/products... vai para o Catalog (8081)
+        - id: catalog-route
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/products/**
+
+        # Rota 2: Tudo que for /api/orders... vai para o Order (8082)
+        - id: order-route
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/orders/**
+
+# Configuração de Observabilidade (Raio-X da aplicação)
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # Envia 100% dos dados para o Zipkin
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
