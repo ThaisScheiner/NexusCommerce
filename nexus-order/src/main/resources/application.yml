@@ -1,0 +1,25 @@
+server:
+  port: 8082 # Porta diferente do Catalog (8081)
+
+spring:
+  application:
+    name: nexus-order
+  cloud:
+    aws:
+      sqs:
+        enabled: true
+      endpoint: http://localhost:4566 # Aponta para o LocalStack
+      region:
+        static: us-east-1
+      credentials:
+        access-key: test
+        secret-key: test
+
+# Observabilidade (Envia traces para o Zipkin)
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
