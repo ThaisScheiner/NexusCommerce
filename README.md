@@ -44,43 +44,43 @@ graph TD
     end
 ```
 
-🛠️ Tecnologias Utilizadas
-Linguagem: Java 21 (LTS)
+## 🛠️ Tecnologias Utilizadas
+* Linguagem: Java 21 (LTS)
 
-Framework: Spring Boot 3.2.2
+* Framework: Spring Boot 3.2.2
 
-API Gateway: Spring Cloud Gateway (Roteamento centralizado)
+* API Gateway: Spring Cloud Gateway (Roteamento centralizado)
 
-Banco de Dados: PostgreSQL 15 (Containerizado)
+* Banco de Dados: PostgreSQL 15 (Containerizado)
 
-Cache: Redis (Para evitar "cache miss" e aliviar o banco)
+* Cache: Redis (Para evitar "cache miss" e aliviar o banco)
 
-Cloud Simulation: LocalStack (Simula AWS S3 e SQS localmente)
+* Cloud Simulation: LocalStack (Simula AWS S3 e SQS localmente)
 
-Mensageria: Amazon SQS (Simple Queue Service) via Spring Cloud AWS
+* Mensageria: Amazon SQS (Simple Queue Service) via Spring Cloud AWS
 
-Armazenamento: Amazon S3 (Simple Storage Service)
+* Armazenamento: Amazon S3 (Simple Storage Service)
 
-Observabilidade: Zipkin (Distributed Tracing)
+* Observabilidade: Zipkin (Distributed Tracing)
 
-Ferramentas: Docker Compose, Lombok, IntelliJ IDEA
+* Ferramentas: Docker Compose, Lombok, IntelliJ IDEA
 
-🚀 Como Rodar o Projeto
-Pré-requisitos
-Java 21 JDK
+## 🚀 Como Rodar o Projeto
+### Pré-requisitos
+* Java 21 JDK
 
-Docker & Docker Compose instalados
+* Docker & Docker Compose instalados
 
-Maven
+* Maven
 
-Passo 1: Subir a Infraestrutura
+### Passo 1: Subir a Infraestrutura
 Na raiz do projeto, execute o comando para subir os containers (Banco, Redis, LocalStack, Zipkin):
 
 ```
 docker-compose up -d
 ```
 
-Passo 2: Configurar a AWS Fake (LocalStack)
+### Passo 2: Configurar a AWS Fake (LocalStack)
 Como o LocalStack é volátil, execute estes comandos no terminal para criar o Bucket e a Fila (necessário apenas na primeira vez que subir o Docker):
 
 ```
@@ -91,9 +91,9 @@ docker exec -it 0000-nexuscommerce-localstack-1 awslocal s3 mb s3://nexus-images
 docker exec -it 0000-nexuscommerce-localstack-1 awslocal sqs create-queue --queue-name nexus-orders
 ```
 
-Passo 3: Inicializar os MicrosserviçosExecute as aplicações na seguinte ordem (via IDE ou Maven):NexusGatewayApplication (Porta 8080)NexusCatalogApplication (Porta 8081)NexusOrderApplication (Porta 8082)
+### Passo 3: Inicializar os MicrosserviçosExecute as aplicações na seguinte ordem (via IDE ou Maven):NexusGatewayApplication (Porta 8080)NexusCatalogApplication (Porta 8081)NexusOrderApplication (Porta 8082)
 
-🧪 Testando a API (Endpoints)Todas as requisições devem ser feitas através do API Gateway (Porta 8080).
+## 🧪 Testando a API (Endpoints)Todas as requisições devem ser feitas através do API Gateway (Porta 8080).
 
 1. Criar Produto (Com Upload de Imagem)
 URL: POST http://localhost:8080/api/products
@@ -126,21 +126,21 @@ Body (JSON):
 
 Resultado Esperado: A API retornará 202 Accepted imediatamente. No console do nexus-order, você verá o Consumer processando a mensagem em background.
 
-📊 Observabilidade
+## 📊 Observabilidade
 
 Acesse o Zipkin para visualizar o rastro distribuído das requisições entre os microsserviços:
 
 URL: http://localhost:9411
 
-📝 Decisões de Arquitetura
+## 📝 Decisões de Arquitetura
 
-Por que SQS? Para desacoplar o recebimento do pedido do seu processamento. Em dias de Black Friday, a API não cai, pois apenas enfileira os pedidos, e os Workers processam na velocidade que o banco suportar (Backpressure).
+* Por que SQS? Para desacoplar o recebimento do pedido do seu processamento. Em dias de Black Friday, a API não cai, pois apenas enfileira os pedidos, e os Workers processam na velocidade que o banco suportar (Backpressure).
 
-Por que Redis? O Catálogo de produtos tem muito mais leitura do que escrita. O Cache reduz drasticamente o custo de banco de dados e latência para o usuário final.
+* Por que Redis? O Catálogo de produtos tem muito mais leitura do que escrita. O Cache reduz drasticamente o custo de banco de dados e latência para o usuário final.
 
-Por que LocalStack? Permite desenvolver usando SDKs reais da AWS sem precisar de cartão de crédito ou conta na Amazon, facilitando o ambiente de desenvolvimento (DevEx).
+* Por que LocalStack? Permite desenvolver usando SDKs reais da AWS sem precisar de cartão de crédito ou conta na Amazon, facilitando o ambiente de desenvolvimento (DevEx).
 
-👨‍💻 Autor
+## 👨‍💻 Autor
 
 Desenvolvido por Thais Scheiner
 
